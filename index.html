@@ -18,37 +18,50 @@
             </a-cursor>
         </a-camera>
         
+        <!-- Win Message (hidden initially) -->
+        <a-text 
+            id="win-message"
+            value="YOU WON!\nAll pairs matched!"
+            position="0 2.8 0"
+            align="center"
+            color="gold"
+            scale="0 0 0"
+            font="kelsonsans"
+            animation__appear="property: scale; startEvents: showWin; dur: 1000; easing: easeOutBounce; to: 2 2 2"
+            animation__glow="property: material.color; startEvents: showWin; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; from: gold; to: yellow">
+        </a-text>
+        
         <!-- Game Cards -->
         <a-entity id="game-board" position="0 1.6 0">
             <!-- Row 1 -->
-            <a-box class="card" position="-1.5 0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="0" data-symbol="A"></a-box>
-            <a-box class="card" position="-0.5 0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="1" data-symbol="B"></a-box>
-            <a-box class="card" position="0.5 0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="2" data-symbol="C"></a-box>
-            <a-box class="card" position="1.5 0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="3" data-symbol="A"></a-box>
+            <a-box class="card" position="-1.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="0" data-symbol="A" data-original-z="0"></a-box>
+            <a-box class="card" position="-0.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="1" data-symbol="B" data-original-z="0"></a-box>
+            <a-box class="card" position="0.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="2" data-symbol="C" data-original-z="0"></a-box>
+            <a-box class="card" position="1.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="3" data-symbol="A" data-original-z="0"></a-box>
             
             <!-- Row 2 -->
-            <a-box class="card" position="-1.5 -0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="4" data-symbol="D"></a-box>
-            <a-box class="card" position="-0.5 -0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="5" data-symbol="E"></a-box>
-            <a-box class="card" position="0.5 -0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="6" data-symbol="F"></a-box>
-            <a-box class="card" position="1.5 -0.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="7" data-symbol="B"></a-box>
+            <a-box class="card" position="-1.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="4" data-symbol="D" data-original-z="0"></a-box>
+            <a-box class="card" position="-0.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="5" data-symbol="E" data-original-z="0"></a-box>
+            <a-box class="card" position="0.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="6" data-symbol="F" data-original-z="0"></a-box>
+            <a-box class="card" position="1.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="7" data-symbol="B" data-original-z="0"></a-box>
             
             <!-- Row 3 -->
-            <a-box class="card" position="-1.5 -1.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="8" data-symbol="C"></a-box>
-            <a-box class="card" position="-0.5 -1.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="9" data-symbol="D"></a-box>
-            <a-box class="card" position="0.5 -1.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="10" data-symbol="E"></a-box>
-            <a-box class="card" position="1.5 -1.5 0" width="0.8" height="1.2" depth="0.1" 
-                   color="blue" data-card-id="11" data-symbol="F"></a-box>
+            <a-box class="card" position="-1.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="8" data-symbol="C" data-original-z="0"></a-box>
+            <a-box class="card" position="-0.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="9" data-symbol="D" data-original-z="0"></a-box>
+            <a-box class="card" position="0.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="10" data-symbol="E" data-original-z="0"></a-box>
+            <a-box class="card" position="1.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
+                   color="blue" data-card-id="11" data-symbol="F" data-original-z="0"></a-box>
         </a-entity>
     </a-scene>
 
@@ -57,6 +70,7 @@
         let flippedCards = [];
         let matchedPairs = 0;
         let canClick = true;
+        let flipCounter = 0; // Track order of flips to prevent z-fighting
 
         // Add click listeners to all cards
         document.addEventListener('DOMContentLoaded', function() {
@@ -96,8 +110,17 @@
                 'A': 'red', 'B': 'green', 'C': 'yellow', 
                 'D': 'orange', 'E': 'purple', 'F': 'pink'
             };
+            
+            // Get current position and move card forward with unique spacing
+            const currentPosition = card.getAttribute('position');
+            flipCounter++; // Increment counter for each flip
+            const uniqueZOffset = 0.05 + (flipCounter * 0.01); // Each card gets slightly different Z
+            const newPosition = `${currentPosition.x} ${currentPosition.y} ${currentPosition.z + uniqueZOffset}`;
+            
             card.setAttribute('color', colors[symbol]);
+            card.setAttribute('position', newPosition);
             card.setAttribute('data-flipped', 'true');
+            card.setAttribute('data-flip-order', flipCounter); // Store flip order
         }
 
         function checkMatch() {
@@ -114,19 +137,35 @@
                 
                 // Check win condition
                 if (matchedPairs === 6) {
-                    setTimeout(() => alert('You won! All pairs matched!'), 500);
+                    showWinMessage();
                 }
             } else {
-                // No match - flip cards back
+                // No match - flip cards back and return to original position
+                const originalZ1 = parseFloat(card1.card.getAttribute('data-original-z'));
+                const originalZ2 = parseFloat(card2.card.getAttribute('data-original-z'));
+                
+                const pos1 = card1.card.getAttribute('position');
+                const pos2 = card2.card.getAttribute('position');
+                
                 card1.card.setAttribute('color', 'blue');
+                card1.card.setAttribute('position', `${pos1.x} ${pos1.y} ${originalZ1}`);
                 card1.card.setAttribute('data-flipped', 'false');
+                card1.card.removeAttribute('data-flip-order');
+                
                 card2.card.setAttribute('color', 'blue');
+                card2.card.setAttribute('position', `${pos2.x} ${pos2.y} ${originalZ2}`);
                 card2.card.setAttribute('data-flipped', 'false');
+                card2.card.removeAttribute('data-flip-order');
             }
             
             // Reset for next turn
             flippedCards = [];
             canClick = true;
+        }
+
+        function showWinMessage() {
+            const winMessage = document.getElementById('win-message');
+            winMessage.emit('showWin');
         }
     </script>
 </body>
