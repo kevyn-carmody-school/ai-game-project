@@ -12,13 +12,111 @@
                 position="0 0 -1"
                 geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
                 material="color: white; shader: flat"
-                animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
-                animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
-                animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
+                animation__click="property: scale; startEvents: click; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                animation__fusing="property: scale; startEvents: fusing; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                animation__mouseleave="property: scale; startEvents: mouseleave; dur: 500; to: 1 1 1">
             </a-cursor>
         </a-camera>
         
-        <!-- Win Message (hidden initially) -->
+        <!-- Introduction Screen -->
+        <a-entity id="intro-screen" visible="true">
+            <!-- Background panel for intro -->
+            <a-plane 
+                position="0 1.6 -0.1" 
+                width="6" 
+                height="4" 
+                color="#333333" 
+                opacity="0.9">
+            </a-plane>
+            
+            <!-- Game Title -->
+            <a-text 
+                value="MEMORY MATCH GAME"
+                position="0 3 0"
+                align="center"
+                color="gold"
+                scale="2 2 2"
+                font="kelsonsans">
+            </a-text>
+            
+            <!-- Instructions -->
+            <a-text 
+                value="HOW TO PLAY:"
+                position="0 2.3 0"
+                align="center"
+                color="white"
+                scale="1.2 1.2 1.2"
+                font="kelsonsans">
+            </a-text>
+            
+            <a-text 
+                value="• Click on cards to flip them over
+• Find matching pairs of colors
+• Match all 6 pairs to WIN
+• You have 60 seconds to complete the game"
+                position="0 1.5 0"
+                align="center"
+                color="lightblue"
+                scale="1 1 1"
+                font="kelsonsans">
+            </a-text>
+            
+            <a-text 
+                value="WIN: Match all pairs before time runs out
+LOSE: Time runs out before you match all pairs"
+                position="0 0.7 0"
+                align="center"
+                color="yellow"
+                scale="1 1 1"
+                font="kelsonsans">
+            </a-text>
+            
+            <!-- Start Button -->
+            <a-box 
+                id="start-button"
+                position="0 -0.3 0.1" 
+                width="3" 
+                height="0.8" 
+                depth="0.2" 
+                color="green"
+                animation__hover="property: color; startEvents: mouseenter; dur: 200; to: lightgreen"
+                animation__leave="property: color; startEvents: mouseleave; dur: 200; to: green">
+                <a-text 
+                    value="CLICK TO START"
+                    position="0 0 0.11"
+                    align="center"
+                    color="white"
+                    scale="1.5 1.5 1.5"
+                    font="kelsonsans">
+                </a-text>
+            </a-box>
+        </a-entity>
+        
+        <!-- Timer Display (hidden initially) -->
+        <a-text 
+            id="timer-display"
+            value="Time: 60"
+            position="-2 3.5 0"
+            align="center"
+            color="white"
+            scale="1.5 1.5 1.5"
+            font="kelsonsans"
+            visible="false">
+        </a-text>
+        
+        <!-- Score Display (hidden initially) -->
+        <a-text 
+            id="score-display"
+            value="Pairs: 0/6"
+            position="2 3.5 0"
+            align="center"
+            color="lightgreen"
+            scale="1.5 1.5 1.5"
+            font="kelsonsans"
+            visible="false">
+        </a-text>
+        
+        <!-- Win Message -->
         <a-text 
             id="win-message"
             value="YOU WON!\nAll pairs matched!"
@@ -27,12 +125,25 @@
             color="gold"
             scale="0 0 0"
             font="kelsonsans"
-            animation__appear="property: scale; startEvents: showWin; dur: 1000; easing: easeOutBounce; to: 2 2 2"
-            animation__glow="property: material.color; startEvents: showWin; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; from: gold; to: yellow">
+            animation__appear="property: scale; startEvents: showWin; dur: 1000; to: 2 2 2"
+            animation__glow="property: material.color; startEvents: showWin; dur: 2000; loop: true; dir: alternate; from: gold; to: yellow">
         </a-text>
         
-        <!-- Game Cards -->
-        <a-entity id="game-board" position="0 1.6 0">
+        <!-- Lose Message -->
+        <a-text 
+            id="lose-message"
+            value="TIME'S UP!\nYou ran out of time!"
+            position="0 2.8 0"
+            align="center"
+            color="red"
+            scale="0 0 0"
+            font="kelsonsans"
+            animation__appear="property: scale; startEvents: showLose; dur: 1000; to: 2 2 2"
+            animation__pulse="property: material.color; startEvents: showLose; dur: 1000; loop: true; dir: alternate; from: red; to: darkred">
+        </a-text>
+        
+        <!-- Game Cards (hidden initially) -->
+        <a-entity id="game-board" position="0 1.6 0" visible="false">
             <!-- Row 1 -->
             <a-box class="card" position="-1.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
                    color="blue" data-card-id="0" data-symbol="A" data-original-z="0"></a-box>
@@ -70,18 +181,93 @@
         let flippedCards = [];
         let matchedPairs = 0;
         let canClick = true;
-        let flipCounter = 0; // Track order of flips to prevent z-fighting
+        let flipCounter = 0;
+        let gameTimer;
+        let timeLeft = 60;
+        let gameEnded = false;
+        let gameStarted = false;
 
-        // Add click listeners to all cards
+        // Initialize the game
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('click', handleCardClick);
             });
+            
+            // Add click listener to start button
+            const startButton = document.getElementById('start-button');
+            startButton.addEventListener('click', startGame);
         });
 
+        function startGame() {
+            if (gameStarted) return;
+            
+            gameStarted = true;
+            
+            // Hide intro screen
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.setAttribute('visible', 'false');
+            
+            // Show game elements
+            const gameBoard = document.getElementById('game-board');
+            const timerDisplay = document.getElementById('timer-display');
+            const scoreDisplay = document.getElementById('score-display');
+            
+            gameBoard.setAttribute('visible', 'true');
+            timerDisplay.setAttribute('visible', 'true');
+            scoreDisplay.setAttribute('visible', 'true');
+            
+            // Start the countdown timer
+            startTimer();
+        }
+
+        function updateScore() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.setAttribute('value', `Pairs: ${matchedPairs}/6`);
+            
+            // Change color based on progress
+            if (matchedPairs === 6) {
+                scoreDisplay.setAttribute('color', 'gold');
+            } else if (matchedPairs >= 4) {
+                scoreDisplay.setAttribute('color', 'yellow');
+            } else if (matchedPairs >= 2) {
+                scoreDisplay.setAttribute('color', 'orange');
+            } else {
+                scoreDisplay.setAttribute('color', 'lightgreen');
+            }
+        }
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            
+            gameTimer = setInterval(() => {
+                if (gameEnded) {
+                    clearInterval(gameTimer);
+                    return;
+                }
+                
+                timeLeft--;
+                timerDisplay.setAttribute('value', `Time: ${timeLeft}`);
+                
+                // Change timer color when time is running low
+                if (timeLeft <= 10) {
+                    timerDisplay.setAttribute('color', 'red');
+                } else if (timeLeft <= 20) {
+                    timerDisplay.setAttribute('color', 'orange');
+                }
+                
+                // Check if time is up
+                if (timeLeft <= 0) {
+                    gameEnded = true;
+                    canClick = false;
+                    clearInterval(gameTimer);
+                    showLoseMessage();
+                }
+            }, 1000);
+        }
+
         function handleCardClick(event) {
-            if (!canClick) return;
+            if (!canClick || gameEnded || !gameStarted) return;
             
             const card = event.target;
             const cardId = card.getAttribute('data-card-id');
@@ -124,6 +310,8 @@
         }
 
         function checkMatch() {
+            if (gameEnded) return;
+            
             const [card1, card2] = flippedCards;
             
             if (card1.symbol === card2.symbol) {
@@ -134,10 +322,14 @@
                 card2.card.setAttribute('visible', 'false');
                 
                 matchedPairs++;
+                updateScore(); // Update the score display
+                console.log(`Matched pairs: ${matchedPairs}/6`);
                 
                 // Check win condition
                 if (matchedPairs === 6) {
-                    showWinMessage();
+                    gameEnded = true;
+                    clearInterval(gameTimer);
+                    setTimeout(showWinMessage, 500);
                 }
             } else {
                 // No match - flip cards back and return to original position
@@ -152,7 +344,6 @@
                 card1.card.setAttribute('data-flipped', 'false');
                 card1.card.removeAttribute('data-flip-order');
                 
-                card2.card.setAttribute('color', 'blue');
                 card2.card.setAttribute('position', `${pos2.x} ${pos2.y} ${originalZ2}`);
                 card2.card.setAttribute('data-flipped', 'false');
                 card2.card.removeAttribute('data-flip-order');
@@ -160,12 +351,19 @@
             
             // Reset for next turn
             flippedCards = [];
-            canClick = true;
+            if (!gameEnded) {
+                canClick = true;
+            }
         }
 
         function showWinMessage() {
             const winMessage = document.getElementById('win-message');
             winMessage.emit('showWin');
+        }
+
+        function showLoseMessage() {
+            const loseMessage = document.getElementById('lose-message');
+            loseMessage.emit('showLose');
         }
     </script>
 </body>
