@@ -10,6 +10,8 @@
 	
 		<a-assets>
 			<img id="wood" src="woodTexture.jpg">
+			<img id="grass" src="grass.jpg">
+			<img id="card" src="card.jpg">
 		</a-assets>
         <!-- Camera with cursor for clicking -->
         <a-camera position="0 1.6 3">
@@ -153,39 +155,46 @@ LOSE: Time runs out before you match all pairs"
         <a-entity id="game-board" position="0 1.6 0" visible="false">
             <!-- Row 1 -->
             <a-box class="card" position="-1.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="0" data-symbol="A" data-original-z="0"></a-box>
+                   src="#card" data-card-id="0" data-symbol="A" data-original-z="0"></a-box>
             <a-box class="card" position="-0.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="1" data-symbol="B" data-original-z="0"></a-box>
+                   src="#card" data-card-id="1" data-symbol="B" data-original-z="0"></a-box>
             <a-box class="card" position="0.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="2" data-symbol="C" data-original-z="0"></a-box>
+                   src="#card" data-card-id="2" data-symbol="C" data-original-z="0"></a-box>
             <a-box class="card" position="1.5 0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="3" data-symbol="A" data-original-z="0"></a-box>
+                   src="#card" data-card-id="3" data-symbol="A" data-original-z="0"></a-box>
             
             <!-- Row 2 -->
             <a-box class="card" position="-1.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="4" data-symbol="D" data-original-z="0"></a-box>
+                   src="#card" data-card-id="4" data-symbol="D" data-original-z="0"></a-box>
             <a-box class="card" position="-0.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="5" data-symbol="E" data-original-z="0"></a-box>
+                   src="#card" data-card-id="5" data-symbol="E" data-original-z="0"></a-box>
             <a-box class="card" position="0.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="6" data-symbol="F" data-original-z="0"></a-box>
+                   src="#card" data-card-id="6" data-symbol="F" data-original-z="0"></a-box>
             <a-box class="card" position="1.5 -0.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="7" data-symbol="B" data-original-z="0"></a-box>
+                   src="#card" data-card-id="7" data-symbol="B" data-original-z="0"></a-box>
             
             <!-- Row 3 -->
             <a-box class="card" position="-1.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="8" data-symbol="C" data-original-z="0"></a-box>
+                   src="#card" data-card-id="8" data-symbol="C" data-original-z="0"></a-box>
             <a-box class="card" position="-0.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="9" data-symbol="D" data-original-z="0"></a-box>
+                   src="#card" data-card-id="9" data-symbol="D" data-original-z="0"></a-box>
             <a-box class="card" position="0.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="10" data-symbol="E" data-original-z="0"></a-box>
+                   src="#card" data-card-id="10" data-symbol="E" data-original-z="0"></a-box>
             <a-box class="card" position="1.5 -1.5 0" width="0.8" height="0.8" depth="0.1" 
-                   color="blue" data-card-id="11" data-symbol="F" data-original-z="0"></a-box>
+                   src="#card" data-card-id="11" data-symbol="F" data-original-z="0"></a-box>
         </a-entity>
 		<!-- ground -->
-		<a-box position="0 -5 0" width="50" depth="50" color="green"></a-box>
+		<a-box position="0 -5 0" width="50" depth="50" src="#grass"></a-box>
 		<!-- table -->
-		<a-box position="0 .5 -3" width="5" depth="5" src="#wood"></a-box>
+		<a-box position="0 -1.5 0" width="5" depth="5" src="#wood"></a-box>
+		<a-box position="2 -3 -2" width="1" depth="1" height="4" src="#wood"></a-box>
+		<a-box position="-2 -3 -2" width="1" depth="1" height="4" src="#wood"></a-box>
+		<a-box position="2 -3 2" width="1" depth="1" height="4" src="#wood"></a-box>
+		<a-box position="-2 -3 2" width="1" depth="1" height="4" src="#wood"></a-box>
 		
+
+    </a-scene>
+
 
     </a-scene>
 
