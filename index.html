@@ -309,52 +309,56 @@ LOSE: Time runs out before you match all pairs"
             card.setAttribute('data-flip-order', flipCounter); // Store flip order
         }
 
-        function checkMatch() {
-            if (gameEnded) return;
-            
-            const [card1, card2] = flippedCards;
-            
-            if (card1.symbol === card2.symbol) {
-                // Match found - make cards disappear
-                card1.card.setAttribute('visible', 'false');
-                card2.card.setAttribute('data-matched', 'true');
-                card1.card.setAttribute('data-matched', 'true');
-                card2.card.setAttribute('visible', 'false');
-                
-                matchedPairs++;
-                updateScore(); // Update the score display
-                console.log(`Matched pairs: ${matchedPairs}/6`);
-                
-                // Check win condition
-                if (matchedPairs === 6) {
-                    gameEnded = true;
-                    clearInterval(gameTimer);
-                    setTimeout(showWinMessage, 500);
-                }
-            } else {
-                // No match - flip cards back and return to original position
-                const originalZ1 = parseFloat(card1.card.getAttribute('data-original-z'));
-                const originalZ2 = parseFloat(card2.card.getAttribute('data-original-z'));
-                
-                const pos1 = card1.card.getAttribute('position');
-                const pos2 = card2.card.getAttribute('position');
-                
-                card1.card.setAttribute('color', 'blue');
-                card1.card.setAttribute('position', `${pos1.x} ${pos1.y} ${originalZ1}`);
-                card1.card.setAttribute('data-flipped', 'false');
-                card1.card.removeAttribute('data-flip-order');
-                
-                card2.card.setAttribute('position', `${pos2.x} ${pos2.y} ${originalZ2}`);
-                card2.card.setAttribute('data-flipped', 'false');
-                card2.card.removeAttribute('data-flip-order');
-            }
-            
-            // Reset for next turn
-            flippedCards = [];
-            if (!gameEnded) {
-                canClick = true;
-            }
+	function checkMatch() {
+    if (gameEnded) return;
+    
+    const [card1, card2] = flippedCards;
+    
+    if (card1.symbol === card2.symbol) {
+        // Match found - make cards disappear
+        card1.card.setAttribute('visible', 'false');
+        card2.card.setAttribute('data-matched', 'true');
+        card1.card.setAttribute('data-matched', 'true');
+        card2.card.setAttribute('visible', 'false');
+        
+        matchedPairs++;
+        updateScore(); // Update the score display
+        console.log(`Matched pairs: ${matchedPairs}/6`);
+        
+        // Check win condition
+        if (matchedPairs === 6) {
+            gameEnded = true;
+            clearInterval(gameTimer);
+            setTimeout(showWinMessage, 500);
         }
+    } else {
+        // No match - flip BOTH cards back and return to original position
+        const originalZ1 = parseFloat(card1.card.getAttribute('data-original-z'));
+        const originalZ2 = parseFloat(card2.card.getAttribute('data-original-z'));
+        
+        const pos1 = card1.card.getAttribute('position');
+        const pos2 = card2.card.getAttribute('position');
+        
+        // Flip back card 1
+        card1.card.setAttribute('color', 'blue');
+        card1.card.setAttribute('position', `${pos1.x} ${pos1.y} ${originalZ1}`);
+        card1.card.setAttribute('data-flipped', 'false');
+        card1.card.removeAttribute('data-flip-order');
+        
+        // Flip back card 2
+        card2.card.setAttribute('color', 'blue');
+        card2.card.setAttribute('position', `${pos2.x} ${pos2.y} ${originalZ2}`);
+        card2.card.setAttribute('data-flipped', 'false');
+        card2.card.removeAttribute('data-flip-order');
+    }
+    
+    // Reset for next turn
+    flippedCards = [];
+    if (!gameEnded) {
+        canClick = true;
+    }
+}
+
 
         function showWinMessage() {
             const winMessage = document.getElementById('win-message');
